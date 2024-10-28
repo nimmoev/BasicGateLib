@@ -13,51 +13,67 @@ const int ERROR_CONNECT_INPUT = 5;
 const int ERROR_CONNECT_OUTPUT = 6;
 
 // Class prototypes
+class Node;
 class Gate;
 class Wire;
 
-class Gate { 
-private:
+/// @brief  A class which offers a unique ID for the Gate and Wire classes
+class Node {
+protected:
     int id;
+    static int numNodes;
+
+public:
+    Node();
+    ~Node();
+    int GetID();
+
+};
+
+/// @brief  A class which offers a GateType and a connection between series of Wires
+class Gate : public Node { 
+private:
     GateType gateType;
     std::vector<Wire*> inputs;
     std::vector<Wire*> outputs;
+
 public:
-    static int numGates;
     Gate();
     Gate(GateType gateType);
     Gate(GateType gateType, std::vector<Wire*> inputs, std::vector<Wire*> outputs);
-    
-    int GetID();
+    GateType GetGateType();
+    std::vector<Wire*> GetInputs();
+    std::vector<Wire*> GetOutputs();
     void Print();
 
-    // Manual functions to connect gates to wires. Do not use, use Connect() instead
+private:
     inline bool _ConnectInput(Wire* input);
     inline bool _ConnectOutput(Wire* output);
+    friend bool Connect(Wire* input, Gate* output, int* errorCode);
+    friend bool Connect(Gate* input, Wire* output, int* errorCode);
+
 };
 
-
-// Wire class has two goals: to be either:
-// 1. Connect gates
-// 2. Be an input or an output 
-class Wire {
+/// @brief  A class which offers a connection between series of Gates
+class Wire: public Node {
 private:
-    int id;
     std::vector<Gate*> inputs;
     std::vector<Gate*> outputs;
-public:
-    static int numWires;
-    Wire();
 
-    int GetID();
+public:
+    Wire();
+    std::vector<Gate*> GetInputs();
+    std::vector<Gate*> GetOutputs();
     void Print();
 
-    // Manual functions to connect gates to wires. Do not use, use Connect() instead
+private:
     inline bool _ConnectInput(Gate* input);
     inline bool _ConnectOutput(Gate* output);
+    friend bool Connect(Wire* input, Gate* output, int* errorCode);
+    friend bool Connect(Gate* input, Wire* output, int* errorCode);
+
 };
 
-// Main functions to connect Wires and Gates
 bool Connect(Wire* input, Gate* output, int* errorCode = nullptr);
 bool Connect(Gate* input, Wire* output, int* errorCode = nullptr);
 

@@ -4,7 +4,7 @@
 void test1() {
     // Declare Wires and Gates
     Wire in0, out0;
-    Gate g0(AND);
+    Gate g0(INV);
 
     // Connect Wires and Gates
     Connect(&in0, &g0);
