@@ -6,11 +6,10 @@
 int Node::numNodes = 0;
 
 Node::Node() { 
-    this->id = numNodes;
-    numNodes++;
+    this->id = ++numNodes;
 }
 
-Node::~Node() {
+Node::~Node() { 
     numNodes--;
 }
 
@@ -189,11 +188,11 @@ bool Connect(Gate* input, Wire* output, int* errorCode) {
     bool res = true;
 
     if (res && input == nullptr) { 
-        error = ERROR_WIRE_IS_NULL;
+        error = ERROR_GATE_IS_NULL;
         res = false;
     }
     if (res && output == nullptr) {
-        error = ERROR_GATE_IS_NULL;
+        error = ERROR_WIRE_IS_NULL;
         res = false;
     }
     if (res && !input->_ConnectOutput(output)) {

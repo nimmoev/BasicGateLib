@@ -1,0 +1,3 @@
+[submodule "BasicTestLib"]
+	path = BasicTestLib
+	url = https://github.com/nimmoev/BasicTestLib
