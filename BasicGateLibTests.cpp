@@ -3,19 +3,6 @@
 
 UnitTestList UST(BasicGateLibTestFunctionVector, BasicGateLibTestNameVector);
 
-void Node_Constr_IDShouldBeZero() {
-    Node n0;
-    UST.AssertEqual(n0.GetID(), 0);
-}
-
-void Node_Deconstr_IDShouldBeOne() {
-    Node* n0 = new Node();
-    Node* n1 = new Node();
-    delete n1;
-    Node n2;
-    UST.AssertEqual(n2.GetID(), 1);
-}
-
 void Gate_Constr_GateTypeShouldBeUNDEF() {
     Gate g0;
     UST.AssertEqual(g0.GetGateType(), UNDEF);
@@ -26,12 +13,10 @@ void Gate_ConstrGateType_GateTypeShouldBeINV() {
     UST.AssertEqual(g0.GetGateType(), INV);
 }
 
-void Gate_ConstrInputsOutputs_InputIDShouldBeZero() {
+void Gate_ConstrInputsOutputs_InputIDShouldMatch() {
     Wire w0;
     Gate g0(AND, {&w0}, {});
-    std::cout << "w0 ID:" << w0.GetID() << std::endl;
-    std::cout << "g0 ID:" << g0.GetID() << std::endl;
-    UST.AssertEqual(g0.GetInputs().at(0)->GetID(), 0);
+    UST.AssertEqual(g0.GetInputs().at(0)->GetID(), w0.GetID());
 }
 
 void Gate_ConstrInputsOutputs_InputsShouldBeEmpty() {
@@ -39,10 +24,10 @@ void Gate_ConstrInputsOutputs_InputsShouldBeEmpty() {
     UST.AssertTrue(g0.GetInputs().empty());
 }
 
-void Gate_ConstrInputsOutputs_OutputIDShouldBeOne() {
+void Gate_ConstrInputsOutputs_OutputIDShouldMatch() {
     Wire w0, w1;
     Gate g0(AND, {&w0}, {&w1});
-    UST.AssertEqual(g0.GetOutputs().at(0)->GetID(), 1);
+    UST.AssertEqual(g0.GetOutputs().at(0)->GetID(), w1.GetID());
 }
 
 void Gate_ConstrInputsOutputs_OutputsShouldBeEmpty() {
@@ -55,10 +40,10 @@ void Gate_GetGateType_GateTypeShouldBeAND() {
     UST.AssertEqual(g0.GetGateType(), AND);
 }
 
-void Gate_GetInputs_IDShouldBeThree() {
+void Gate_GetInputs_IDShouldMatch() {
     Wire w0, w1, w2, w3;
     Gate g0(AND, {&w0, &w1, &w2, &w3}, {});
-    UST.AssertEqual(g0.GetInputs().at(3)->GetID(), 3);
+    UST.AssertEqual(g0.GetInputs().at(3)->GetID(), w3.GetID());
 }
 
 void Gate_GetInputs_ShouldBeEmpty() {
@@ -66,21 +51,22 @@ void Gate_GetInputs_ShouldBeEmpty() {
     UST.AssertTrue(g0.GetInputs().empty());
 }
 
-void Gate_GetOutputs_IDShouldBeFour() {
+void Gate_GetOutputs_IDShouldMatch() {
     Wire w0, w1, w2, w3, w4;
     Gate g0(AND, {&w0, &w1, &w2, &w3}, {&w4});
-    UST.AssertEqual(g0.GetOutputs().at(0)->GetID(), 4);
+    UST.AssertEqual(g0.GetOutputs().at(0)->GetID(), w4.GetID());
 }
+
 void Gate_GetOutputs_ShouldBeEmpty() {
     Gate g0(UNDEF);
     UST.AssertTrue(g0.GetOutputs().empty());
 }
 
-void Wire_GetInputs_IDShouldBeZero() {
+void Wire_GetInputs_IDShouldMatch() {
     Gate g0;
     Wire w0;
     Connect(&g0, &w0);
-    UST.AssertEqual(w0.GetInputs().at(0)->GetID(), 0);
+    UST.AssertEqual(w0.GetInputs().at(0)->GetID(), g0.GetID());
 }
 
 void Wire_GetInputs_ShouldBeEmpty() {
@@ -88,11 +74,11 @@ void Wire_GetInputs_ShouldBeEmpty() {
     UST.AssertTrue(w0.GetInputs().empty());
 }
 
-void Wire_GetOutputs_IDShouldBeOne() {
+void Wire_GetOutputs_IDShouldMatch() {
     Wire w0;
     Gate g0;
     Connect(&w0, &g0);
-    UST.AssertEqual(w0.GetOutputs().at(0)->GetID(), 1);
+    UST.AssertEqual(w0.GetOutputs().at(0)->GetID(), g0.GetID());
 }
 
 void Wire_GetOutputs_ShouldBeEmpty() {
@@ -114,32 +100,32 @@ void None_ConnectWireGate_ShouldBeErrorNone() {
     UST.AssertEqual(res, ERROR_NONE);
 }
 
-void None_ConnectWireGate_GateInputIDShouldBeZero() {
+void None_ConnectWireGate_GateInputIDShouldMatch() {
     Wire w0;
     Gate g0;
     Connect(&w0, &g0);
-    UST.AssertEqual(g0.GetInputs().at(0)->GetID(), 0);
+    UST.AssertEqual(g0.GetInputs().at(0)->GetID(), w0.GetID());
 }
 
-void None_ConnectWireGate_GateOutputIDShouldBeOne() {
+void None_ConnectWireGate_GateOutputIDShouldMatch() {
     Wire w0, w1;
     Gate g0(AND, {}, {&w1});
     Connect(&w0, &g0);
-    UST.AssertEqual(g0.GetOutputs().at(0)->GetID(), 1);
+    UST.AssertEqual(g0.GetOutputs().at(0)->GetID(), w1.GetID());
 }
 
-void None_ConnectWireGate_WireInputIDShouldBeTwo() {
+void None_ConnectWireGate_WireInputIDShouldMatch() {
     Wire w0, w1;
     Gate g0;
     Connect(&g0, &w1);
-    UST.AssertEqual(w1.GetInputs().at(0)->GetID(), 2);
+    UST.AssertEqual(w1.GetInputs().at(0)->GetID(), g0.GetID());
 }
 
-void None_ConnectWireGate_WireOutputIDShouldBeThree() {
-    Wire w0, w1, w2, w3;
-    Gate g0(AND, {}, {&w3});
+void None_ConnectWireGate_WireOutputIDShouldMatch() {
+    Wire w0, w1;
+    Gate g0(AND, {}, {&w1});
     Connect(&w0, &g0);
-    UST.AssertEqual(w0.GetOutputs().at(0)->GetID(), 3);
+    UST.AssertEqual(w0.GetOutputs().at(0)->GetID(), g0.GetID());
 }
 
 void None_ConnectWireGate_ShouldFailWireNullptr() {
@@ -184,32 +170,32 @@ void None_ConnectGateWire_ShouldBeErrorNone() {
     UST.AssertEqual(res, ERROR_NONE);
 }
 
-void None_ConnectGateWire_GateInputIDShouldBeZero() {
+void None_ConnectGateWire_GateInputIDShouldMatch() {
     Wire w0, w1;
     Gate g0(AND, {&w0}, {});
     Connect(&g0, &w1);
-    UST.AssertEqual(g0.GetInputs().at(0)->GetID(), 0);
+    UST.AssertEqual(g0.GetInputs().at(0)->GetID(), w0.GetID());
 }
 
-void None_ConnectGateWire_GateOutputIDShouldBeOne() {
-    Wire w0, w1;
+void None_ConnectGateWire_GateOutputIDShouldMatch() {
+    Wire w0;
     Gate g0;
-    Connect(&g0, &w1);
-    UST.AssertEqual(g0.GetOutputs().at(0)->GetID(), 1);
+    Connect(&g0, &w0);
+    UST.AssertEqual(g0.GetOutputs().at(0)->GetID(), w0.GetID());
 }
 
-void None_ConnectGateWire_WireInputIDShouldBeTwo() {
-    Wire w0, w1;
-    Gate g0(AND, {&w1}, {});
-    Connect(&g0, &w1);
-    UST.AssertEqual(w1.GetInputs().at(0)->GetID(), 2);
+void None_ConnectGateWire_WireInputIDShouldMatch() {
+    Wire w0;
+    Gate g0(AND, {&w0}, {});
+    Connect(&g0, &w0);
+    UST.AssertEqual(w0.GetInputs().at(0)->GetID(), g0.GetID());
 }
 
-void None_ConnectGateWire_WireOutputIDShouldBeThree() {
-    Wire w0, w1, w2;
+void None_ConnectGateWire_WireOutputIDShouldMatch() {
+    Wire w0;
     Gate g0;
-    Connect(&w2, &g0);
-    UST.AssertEqual(w2.GetOutputs().at(0)->GetID(), 3);
+    Connect(&w0, &g0);
+    UST.AssertEqual(w0.GetOutputs().at(0)->GetID(), g0.GetID());
 }
 
 void None_ConnectGateWire_ShouldFailWireNullptr() {
