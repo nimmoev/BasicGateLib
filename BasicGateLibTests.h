@@ -4,6 +4,7 @@
 #ifndef BGL_TESTS_H
 #define BGL_TESTS_H
 
+extern UnitTestList BGL_UTL;
 // To add a new test, follow these instructions:
 //  1. Declare a parameter-less type of void 
 //  2. Append that function to BasicGateLibTestFunctionVector
