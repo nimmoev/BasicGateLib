@@ -1,4 +1,3 @@
-#include <iostream>
 #include "BasicGateLibTests.h"
 
 std::vector<void (*)()> BasicGateLibTestFunctionVector = {
