@@ -1,14 +1,20 @@
-#include "BasicGateLib.h"
-#include "BasicTestLib/BasicTestLib.h"
-
 #ifndef BGL_TESTS_H
 #define BGL_TESTS_H
 
-extern UnitTestList BGL_UTL;
+#include <iostream>
+
+#include "BasicGateLib.h"
+#include "BasicTestLib/BasicTestLib.h"
+
 // To add a new test, follow these instructions:
-//  1. Declare a parameter-less type of void 
-//  2. Append that function to BasicGateLibTestFunctionVector
-//  3. Append a string of the same name as the function to BasicGateLibTestNameVector
+//  1. Declare a parameter-less function of type void in header file
+//  2. Define a parameter-less function of type void in source file
+//  3. Append the test function to BasicGateLibTestFunctionVector in source file
+//  4. Append a string of the same name as the test function to BasicGateLibTestNameVector in source file
+
+extern std::vector<void (*)()> BasicGateLibTestFunctionVector;
+extern std::vector<std::string> BasicGateLibTestNameVector;
+extern UnitTestList BGL_UTL;
 
 void Gate_Constr_GateTypeShouldBeUNDEF();
 void Gate_ConstrGateType_GateTypeShouldBeINV();
@@ -45,81 +51,5 @@ void None_ConnectGateWire_ShouldFailWireNullptr();
 void None_ConnectGateWire_ShouldBeErrorWireIsNull();
 void None_ConnectGateWire_ShouldFailGateNullptr();
 void None_ConnectGateWire_ShouldBeErrorGateIsNull();
-
-std::vector<void (*)()> BasicGateLibTestFunctionVector = {
-    Gate_Constr_GateTypeShouldBeUNDEF,
-    Gate_ConstrGateType_GateTypeShouldBeINV,
-    Gate_ConstrInputsOutputs_InputIDShouldMatch,
-    Gate_ConstrInputsOutputs_InputsShouldBeEmpty,
-    Gate_ConstrInputsOutputs_OutputIDShouldMatch,
-    Gate_ConstrInputsOutputs_OutputsShouldBeEmpty,
-    Gate_GetGateType_GateTypeShouldBeAND,
-    Gate_GetInputs_IDShouldMatch,
-    Gate_GetInputs_ShouldBeEmpty,
-    Gate_GetOutputs_IDShouldMatch,
-    Gate_GetOutputs_ShouldBeEmpty,
-    Wire_GetInputs_IDShouldMatch,
-    Wire_GetInputs_ShouldBeEmpty,
-    Wire_GetOutputs_IDShouldMatch,
-    Wire_GetOutputs_ShouldBeEmpty,
-    None_ConnectWireGate_ShouldSucceed,
-    None_ConnectWireGate_ShouldBeErrorNone,
-    None_ConnectWireGate_GateInputIDShouldMatch,
-    None_ConnectWireGate_GateOutputIDShouldMatch,
-    None_ConnectWireGate_WireInputIDShouldMatch,
-    None_ConnectWireGate_WireOutputIDShouldMatch,
-    None_ConnectWireGate_ShouldFailWireNullptr,
-    None_ConnectWireGate_ShouldBeErrorWireIsNull,
-    None_ConnectWireGate_ShouldFailGateNullptr,
-    None_ConnectWireGate_ShouldBeErrorGateIsNull,
-    None_ConnectGateWire_ShouldSucceed,
-    None_ConnectGateWire_ShouldBeErrorNone,
-    None_ConnectGateWire_GateInputIDShouldMatch,
-    None_ConnectGateWire_GateOutputIDShouldMatch,
-    None_ConnectGateWire_WireInputIDShouldMatch,
-    None_ConnectGateWire_WireOutputIDShouldMatch,
-    None_ConnectGateWire_ShouldFailWireNullptr,
-    None_ConnectGateWire_ShouldBeErrorWireIsNull,
-    None_ConnectGateWire_ShouldFailGateNullptr,
-    None_ConnectGateWire_ShouldBeErrorGateIsNull
-};
-
-std::vector<std::string> BasicGateLibTestNameVector = {
-    "Gate_Constr_GateTypeShouldBeUNDEF",
-    "Gate_ConstrGateType_GateTypeShouldBeINV",
-    "Gate_ConstrInputsOutputs_InputIDShouldMatch",
-    "Gate_ConstrInputsOutputs_InputsShouldBeEmpty",
-    "Gate_ConstrInputsOutputs_OutputIDShouldMatch",
-    "Gate_ConstrInputsOutputs_OutputsShouldBeEmpty",
-    "Gate_GetGateType_GateTypeShouldBeAND",
-    "Gate_GetInputs_IDShouldMatch",
-    "Gate_GetInputs_ShouldBeEmpty",
-    "Gate_GetOutputs_IDShouldMatch",
-    "Gate_GetOutputs_ShouldBeEmpty",
-    "Wire_GetInputs_IDShouldMatch",
-    "Wire_GetInputs_ShouldBeEmpty",
-    "Wire_GetOutputs_IDShouldMatch",
-    "Wire_GetOutputs_ShouldBeEmpty",
-    "None_ConnectWireGate_ShouldSucceed",
-    "None_ConnectWireGate_ShouldBeErrorNone",
-    "None_ConnectWireGate_GateInputIDShouldMatch",
-    "None_ConnectWireGate_GateOutputIDShouldMatch",
-    "None_ConnectWireGate_WireInputIDShouldMatch",
-    "None_ConnectWireGate_WireOutputIDShouldMatch",
-    "None_ConnectWireGate_ShouldFailWireNullptr",
-    "None_ConnectWireGate_ShouldBeErrorWireIsNull",
-    "None_ConnectWireGate_ShouldFailGateNullptr",
-    "None_ConnectWireGate_ShouldBeErrorGateIsNull",
-    "None_ConnectGateWire_ShouldSucceed",
-    "None_ConnectGateWire_ShouldBeErrorNone",
-    "None_ConnectGateWire_GateInputIDShouldMatch",
-    "None_ConnectGateWire_GateOutputIDShouldMatch",
-    "None_ConnectGateWire_WireInputIDShouldMatch",
-    "None_ConnectGateWire_WireOutputIDShouldMatch",
-    "None_ConnectGateWire_ShouldFailWireNullptr",
-    "None_ConnectGateWire_ShouldBeErrorWireIsNull",
-    "None_ConnectGateWire_ShouldFailGateNullptr",
-    "None_ConnectGateWire_ShouldBeErrorGateIsNull"
-};
 
 #endif

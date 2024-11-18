@@ -1,7 +1,9 @@
-#include <vector>
-
 #ifndef BGL_H
 #define BGL_H
+
+#include <iostream>
+#include <vector>
+
 enum GateType {INV, AND, OR, NAND, NOR, XOR, XNOR, UNDEF};
 
 const int ERROR_NONE = 0;

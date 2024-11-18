@@ -1,6 +1,3 @@
-#include <iostream>
-#include <vector>
-
 #include "BasicGateLib.h"
 
 int Node::numNodes = 0;
