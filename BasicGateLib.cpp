@@ -18,23 +18,21 @@ int Node::GetID() {
 Gate::Gate() { 
     this->gateType = UNDEF;
     this->inputs.clear();
-    this->outputs.clear();
+    this->output = nullptr;
 }
 
 Gate::Gate(GateType gateType) {
     this->gateType = gateType;
     this->inputs.clear();
-    this->outputs.clear();
+    this->output = nullptr;
 }
 
-Gate::Gate(GateType gateType, std::vector<Wire*> inputs, std::vector<Wire*> outputs) {
+Gate::Gate(GateType gateType, std::vector<Wire*> inputs, Wire* output) {
     this->gateType = gateType;
     for (int i = 0; i < inputs.size(); i++) {
         Connect(inputs.at(i), this);
     }
-    for (int i = 0; i < outputs.size(); i++) { 
-        Connect(this, outputs.at(i));
-    }
+    Connect(this, output);
 }
 
 // Return an integer representing the GateType of the Gate
@@ -47,9 +45,9 @@ std::vector<Wire*> Gate::GetInputs() {
     return this->inputs;
 }
 
-// Return a copy of all output Wires in the Gate
-std::vector<Wire*> Gate::GetOutputs() {
-    return this->outputs;
+// Return an address of the output Wire in the Gate
+Wire* Gate::GetOutput() {
+    return this->output;
 }
 
 // Debug function to print all members of the Gate
@@ -64,13 +62,8 @@ void Gate::Print() {
     }
     std::cout << std::endl;
 
-    std::cout <<  "   Outputs: ";
-    for (int i = 0; i < this->outputs.size(); i++) { 
-        std::cout << "W" << outputs.at(i)->GetID();
-        if (i < this->outputs.size()-1) {
-            std::cout << ", ";
-        }
-    }
+    std::cout <<  "   Output: ";
+    std::cout << "W" << output->GetID();
     std::cout << std::endl;
 }
 
@@ -84,13 +77,13 @@ inline bool Gate::_ConnectInput(Wire* input) {
     return true;
 }
 
-// Append output Wire to this Gate's output vector. Use Connect() to maintain integrity of the Wires and Gates. 
+// Set this Gate's output to an input Wire. Use Connect() to maintain integrity of the Wires and Gates. 
 inline bool Gate::_ConnectOutput(Wire* output) { 
     // Will probably be done prior, but here for safety reasons
     if (output == nullptr) { 
         return false;
     }
-    this->outputs.push_back(output);
+    this->output = output;
     return true;
 }
 

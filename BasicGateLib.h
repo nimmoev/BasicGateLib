@@ -37,15 +37,15 @@ class Gate : public Node {
 private:
     GateType gateType;
     std::vector<Wire*> inputs;
-    std::vector<Wire*> outputs;
+    Wire* output;
 
 public:
     Gate();
     Gate(GateType gateType);
-    Gate(GateType gateType, std::vector<Wire*> inputs, std::vector<Wire*> outputs);
+    Gate(GateType gateType, std::vector<Wire*> inputs, Wire* output);
     GateType GetGateType();
     std::vector<Wire*> GetInputs();
-    std::vector<Wire*> GetOutputs();
+    Wire* GetOutput();
     void Print();
 
 private:
