@@ -15,6 +15,11 @@ int Node::GetID() {
     return this->id;
 }
 
+// Output NodeID
+void Node::PrintID() { 
+    std::cout << "N" << this->id;
+}
+
 Gate::Gate() { 
     this->gateType = UNDEF;
     this->inputs.clear();

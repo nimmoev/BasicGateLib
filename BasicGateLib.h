@@ -29,6 +29,7 @@ public:
     Node();
     ~Node();
     int GetID();
+    virtual void PrintID();
 
 };
 
