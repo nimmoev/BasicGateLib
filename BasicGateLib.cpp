@@ -4,15 +4,26 @@ int Node::numNodes = 0;
 
 Node::Node() { 
     this->id = ++numNodes;
+    this->name = "";
+}
+
+Node::Node(std::string name) { 
+    this->id = ++numNodes;
+    this->name = name;
 }
 
 Node::~Node() { 
     numNodes--;
 }
 
-// Return a unique integer ID assigned to this object
+// Return the unique integer ID assigned to this object
 int Node::GetID() { 
     return this->id;
+}
+
+// Return the name assigned to this object
+std::string Node::GetName() { 
+    return this->name;
 }
 
 // Output NodeID
@@ -26,7 +37,21 @@ Gate::Gate() {
     this->output = nullptr;
 }
 
+Gate::Gate(std::string name) { 
+    this->name = name;
+    this->gateType = UNDEF;
+    this->inputs.clear();
+    this->output = nullptr;
+}
+
 Gate::Gate(GateType gateType) {
+    this->gateType = gateType;
+    this->inputs.clear();
+    this->output = nullptr;
+}
+
+Gate::Gate(GateType gateType, std::string name) { 
+    this->name = name;
     this->gateType = gateType;
     this->inputs.clear();
     this->output = nullptr;
@@ -38,6 +63,16 @@ Gate::Gate(GateType gateType, std::vector<Wire*> inputs, Wire* output) {
         Connect(inputs.at(i), this);
     }
     Connect(this, output);
+}
+
+Gate::Gate(GateType gateType, std::vector<Wire*> inputs, Wire* output, std::string name) {
+    this->name = name;
+    this->gateType = gateType;
+    for (int i = 0; i < inputs.size(); i++) {
+        Connect(inputs.at(i), this);
+    }
+    Connect(this, output);
+
 }
 
 // Return an integer representing the GateType of the Gate
@@ -93,6 +128,12 @@ inline bool Gate::_ConnectOutput(Wire* output) {
 }
 
 Wire::Wire() {
+    this->inputs.clear();
+    this->outputs.clear();
+}
+
+Wire::Wire(std::string name) {
+    this->name = name;
     this->inputs.clear();
     this->outputs.clear();
 }
@@ -231,6 +272,42 @@ std::vector<int> GetIDList(std::vector<Wire*> wireList) {
         resultIDList.push_back(wireList.at(i)->GetID());
     }
     return resultIDList;
+}
+
+// Return a copy of all Names in a NetList
+std::vector<std::string> GetNameList(std::vector<Node*> netList) {
+    std::vector<std::string> resultNameList;
+    if (netList.empty()) {
+        return resultNameList;
+    }
+    for (int i = 0; i < netList.size(); i++) { 
+        resultNameList.push_back(netList.at(i)->GetName());
+    }
+    return resultNameList;
+}
+
+// Return a copy of all Names in a GateList
+std::vector<std::string> GetNameList(std::vector<Gate*> gateList) {
+    std::vector<std::string> resultNameList;
+    if (gateList.empty()) {
+        return resultNameList;
+    }
+    for (int i = 0; i < gateList.size(); i++) { 
+        resultNameList.push_back(gateList.at(i)->GetName());
+    }
+    return resultNameList;
+}
+
+// Return a copy of all Names in a WireList
+std::vector<std::string> GetNameList(std::vector<Wire*> wireList) {
+    std::vector<std::string> resultNameList;
+    if (wireList.empty()) {
+        return resultNameList;
+    }
+    for (int i = 0; i < wireList.size(); i++) { 
+        resultNameList.push_back(wireList.at(i)->GetName());
+    }
+    return resultNameList;
 }
 
 // Return a copy of all Gates in a NetList

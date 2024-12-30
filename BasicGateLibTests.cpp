@@ -1,15 +1,21 @@
 #include "BasicGateLibTests.h"
 
 std::vector<void (*)()> BasicGateLibTestFunctionVector = {
+    Node_Constr_ShouldMatch,
+    Node_ConstrName_NameShouldMatch,
     Gate_Constr_GateTypeShouldBeUNDEF,
+    Gate_ConstrName_NameShouldMatch,
     Gate_ConstrGateType_GateTypeShouldBeINV,
+    Gate_ConstrGateTypeName_NameShouldMatch,
     Gate_ConstrInputsOutputs_InputShouldMatch,
     Gate_ConstrInputsOutputs_InputsShouldBeEmpty,
     Gate_ConstrInputsOutputs_OutputShouldMatch,
+    Gate_ConstrInputsOutputsName_NameShouldMatch,
     Gate_GetGateType_GateTypeShouldBeAND,
     Gate_GetInputs_ShouldMatch,
     Gate_GetInputs_ShouldBeEmpty,
     Gate_GetOutputs_ShouldMatch,
+    Wire_ConstrName_NameShouldMatch,
     Wire_GetInputs_ShouldMatch,
     Wire_GetInputs_ShouldBeEmpty,
     Wire_GetOutputs_ShouldMatch,
@@ -37,6 +43,9 @@ std::vector<void (*)()> BasicGateLibTestFunctionVector = {
     None_GetIDListNodes_ShouldMatch,
     None_GetIDListGates_ShouldMatch,
     None_GetIDListWires_ShouldMatch,
+    None_GetNameListNodes_NameShouldMatch,
+    None_GetNameListGates_NameShouldMatch,
+    None_GetNameListWires_NameShouldMatch,
     None_GetGateList_ShouldMatch,
     None_GetWireList_ShouldMatch,
     None_GetInputsList_ShouldMatch,
@@ -44,15 +53,21 @@ std::vector<void (*)()> BasicGateLibTestFunctionVector = {
 };
 
 std::vector<std::string> BasicGateLibTestNameVector = {
+    "Node_Constr_ShouldMatch",
+    "Node_ConstrName_NameShouldMatch",
     "Gate_Constr_GateTypeShouldBeUNDEF",
+    "Gate_ConstrName_NameShouldMatch",
     "Gate_ConstrGateType_GateTypeShouldBeINV",
+    "Gate_ConstrGateTypeName_NameShouldMatch",
     "Gate_ConstrInputsOutputs_InputShouldMatch",
     "Gate_ConstrInputsOutputs_InputsShouldBeEmpty",
     "Gate_ConstrInputsOutputs_OutputShouldMatch",
+    "Gate_ConstrInputsOutputsName_NameShouldMatch",
     "Gate_GetGateType_GateTypeShouldBeAND",
     "Gate_GetInputs_ShouldMatch",
     "Gate_GetInputs_ShouldBeEmpty",
     "Gate_GetOutputs_ShouldMatch",
+    "Wire_ConstrName_NameShouldMatch",
     "Wire_GetInputs_ShouldMatch",
     "Wire_GetInputs_ShouldBeEmpty",
     "Wire_GetOutputs_ShouldMatch",
@@ -80,6 +95,9 @@ std::vector<std::string> BasicGateLibTestNameVector = {
     "None_GetIDListNodes_ShouldMatch",
     "None_GetIDListGates_ShouldMatch",
     "None_GetIDListWires_ShouldMatch",
+    "None_GetNameListNodes_NameShouldMatch",
+    "None_GetNameListGates_NameShouldMatch",
+    "None_GetNameListWires_NameShouldMatch",
     "None_GetGateList_ShouldMatch",
     "None_GetWireList_ShouldMatch",
     "None_GetInputsList_ShouldMatch",
@@ -88,14 +106,34 @@ std::vector<std::string> BasicGateLibTestNameVector = {
 
 UnitTestList BGL_UTL("BGL Unit Tests", BasicGateLibTestFunctionVector, BasicGateLibTestNameVector);
 
+void Node_Constr_ShouldMatch() {
+    Node w0;
+    BGL_UTL.AssertEqual(w0.GetID(), 1);
+}
+
+void Node_ConstrName_NameShouldMatch() {
+    Node w0("w0");
+    BGL_UTL.AssertEqual(w0.GetName(), "w0");
+}
+
 void Gate_Constr_GateTypeShouldBeUNDEF() {
     Gate g0;
     BGL_UTL.AssertEqual(g0.GetGateType(), UNDEF);
 }
 
+void Gate_ConstrName_NameShouldMatch() { 
+    Gate g0("g0");
+    BGL_UTL.AssertEqual(g0.GetName(), "g0");
+}
+
 void Gate_ConstrGateType_GateTypeShouldBeINV() {
     Gate g0(INV);
     BGL_UTL.AssertEqual(g0.GetGateType(), INV);
+}
+
+void Gate_ConstrGateTypeName_NameShouldMatch() {
+    Gate g0(INV, "g0");
+    BGL_UTL.AssertEqual(g0.GetName(), "g0");
 }
 
 void Gate_ConstrInputsOutputs_InputShouldMatch() {
@@ -113,6 +151,12 @@ void Gate_ConstrInputsOutputs_OutputShouldMatch() {
     Wire w0, w1;
     Gate g0(AND, {&w0}, {&w1});
     BGL_UTL.AssertEqual(g0.GetOutput()->GetID(), w1.GetID());
+}
+
+void Gate_ConstrInputsOutputsName_NameShouldMatch() {
+    Wire w0, w1;
+    Gate g0(AND, {&w0}, {&w1}, "g0");
+    BGL_UTL.AssertEqual(g0.GetName(), "g0");
 }
 
 void Gate_GetGateType_GateTypeShouldBeAND() {
@@ -135,6 +179,11 @@ void Gate_GetOutputs_ShouldMatch() {
     Wire w0, w1, w2, w3, w4;
     Gate g0(AND, {&w0, &w1, &w2, &w3}, {&w4});
     BGL_UTL.AssertEqual(g0.GetOutput()->GetID(), w4.GetID());
+}
+
+void Wire_ConstrName_NameShouldMatch() {
+    Wire w0("w0");
+    BGL_UTL.AssertEqual(w0.GetName(), "w0");
 }
 
 void Wire_GetInputs_ShouldMatch() {
@@ -320,6 +369,27 @@ void None_GetIDListWires_ShouldMatch() {
     Wire w0, w1;
     std::vector<Wire*> wireList = {&w0, &w1};
     BGL_UTL.AssertEqual({w0.GetID(), w1.GetID()}, GetIDList(wireList));
+}
+
+void None_GetNameListNodes_NameShouldMatch() {
+    Wire w0("w0"), w1("w1"), w2("w2"), w3("w3"), w4("w4");
+    Gate g0(AND, {&w0, &w1}, &w2, "g0");
+    Gate g1(OR, {&w2, &w3}, &w4, "g1");
+    std::vector<Node*> netList = {&w0, &w1, &g0, &w2, &w3, &g1, &w4};
+    BGL_UTL.AssertEqual({w0.GetName(), w1.GetName(), g0.GetName(), w2.GetName(), w3.GetName(), g1.GetName(), w4.GetName()}, GetNameList(netList));
+}
+
+void None_GetNameListGates_NameShouldMatch() {
+    Wire w0, w1;
+    Gate g0("g0"), g1("g1");
+    std::vector<Gate*> gateList = {&g0, &g1};
+    BGL_UTL.AssertEqual({g0.GetName(), g1.GetName()}, GetNameList(gateList));
+}
+
+void None_GetNameListWires_NameShouldMatch() {
+    Wire w0("w0"), w1("w1");
+    std::vector<Wire*> wireList = {&w0, &w1};
+    BGL_UTL.AssertEqual({w0.GetName(), w1.GetName()}, GetNameList(wireList));
 }
 
 void None_GetGateList_ShouldMatch() {

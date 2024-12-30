@@ -27,12 +27,15 @@ class Wire;
 class Node {
 protected:
     int id;
+    std::string name;
     static int numNodes;
 
 public:
     Node();
+    Node(std::string name);
     ~Node();
     int GetID();
+    std::string GetName();
     virtual void PrintID();
 
 };
@@ -46,8 +49,11 @@ private:
 
 public:
     Gate();
+    Gate(std::string name);
     Gate(GateType gateType);
+    Gate(GateType gateType, std::string name);
     Gate(GateType gateType, std::vector<Wire*> inputs, Wire* output);
+    Gate(GateType gateType, std::vector<Wire*> inputs, Wire* output, std::string name);
     GateType GetGateType();
     std::vector<Wire*> GetInputs();
     Wire* GetOutput();
@@ -69,6 +75,7 @@ private:
 
 public:
     Wire();
+    Wire(std::string name);
     std::vector<Gate*> GetInputs();
     std::vector<Gate*> GetOutputs();
     void Print();
@@ -87,6 +94,9 @@ int Connect(Gate* input, Wire* output);
 std::vector<int> GetIDList(std::vector<Node*> netList);
 std::vector<int> GetIDList(std::vector<Gate*> gateList);
 std::vector<int> GetIDList(std::vector<Wire*> wireList);
+std::vector<std::string> GetNameList(std::vector<Node*> netList);
+std::vector<std::string> GetNameList(std::vector<Gate*> gateList);
+std::vector<std::string> GetNameList(std::vector<Wire*> wireList);
 std::vector<Gate*> GetGateList(std::vector<Node*> netList);
 std::vector<Wire*> GetWireList(std::vector<Node*> netList);
 std::vector<Wire*> GetInputsList(std::vector<Node*> netList);
