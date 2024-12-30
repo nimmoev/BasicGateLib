@@ -4,15 +4,19 @@
 #include <iostream>
 #include <vector>
 
+enum NodeState {OFF = 0, ON = 1, DC = 2, UNSET = 3};
 enum GateType {INV, AND, OR, NAND, NOR, XOR, XNOR, UNDEF};
 
-const int ERROR_NONE = 0;
-const int ERROR_GENERIC = 1;
-const int ERROR_NOT_IMPLEMENTED = 2;
-const int ERROR_WIRE_IS_NULL = 3;
-const int ERROR_GATE_IS_NULL = 4;
-const int ERROR_CONNECT_INPUT = 5;
-const int ERROR_CONNECT_OUTPUT = 6;
+const int ERROR_NONE = 0x00;
+const int ERROR_GENERIC = 0x01;
+const int ERROR_NOT_IMPLEMENTED = 0x02;
+const int ERROR_WIRE_IS_NULL = 0x03;
+const int ERROR_GATE_IS_NULL = 0x04;
+const int ERROR_CONNECT_INPUT = 0x05;
+const int ERROR_CONNECT_OUTPUT = 0x06;
+const int ERROR_NETLIST_EMPTY = 0x07;
+const int ERROR_GATELIST_EMPTY = 0x08;
+const int ERROR_WIRELIST_EMPTY = 0x09;
 
 // Class prototypes
 class Node;
@@ -52,8 +56,8 @@ public:
 private:
     inline bool _ConnectInput(Wire* input);
     inline bool _ConnectOutput(Wire* output);
-    friend bool Connect(Wire* input, Gate* output, int* errorCode);
-    friend bool Connect(Gate* input, Wire* output, int* errorCode);
+    friend int Connect(Wire* input, Gate* output);
+    friend int Connect(Gate* input, Wire* output);
 
 };
 
@@ -72,12 +76,20 @@ public:
 private:
     inline bool _ConnectInput(Gate* input);
     inline bool _ConnectOutput(Gate* output);
-    friend bool Connect(Wire* input, Gate* output, int* errorCode);
-    friend bool Connect(Gate* input, Wire* output, int* errorCode);
+    friend int Connect(Wire* input, Gate* output);
+    friend int Connect(Gate* input, Wire* output);
 
 };
 
-bool Connect(Wire* input, Gate* output, int* errorCode = nullptr);
-bool Connect(Gate* input, Wire* output, int* errorCode = nullptr);
+int Connect(Wire* input, Gate* output);
+int Connect(Gate* input, Wire* output);
+
+std::vector<int> GetIDList(std::vector<Node*> netList);
+std::vector<int> GetIDList(std::vector<Gate*> gateList);
+std::vector<int> GetIDList(std::vector<Wire*> wireList);
+std::vector<Gate*> GetGateList(std::vector<Node*> netList);
+std::vector<Wire*> GetWireList(std::vector<Node*> netList);
+std::vector<Wire*> GetInputsList(std::vector<Node*> netList);
+std::vector<Wire*> GetOutputsList(std::vector<Node*> netList);
 
 #endif

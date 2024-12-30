@@ -150,7 +150,7 @@ inline bool Wire::_ConnectOutput(Gate* output) {
 }
 
 // Connect an input Wire and an output Gate
-bool Connect(Wire* input, Gate* output, int* errorCode) { 
+int Connect(Wire* input, Gate* output) { 
     int error = ERROR_NONE;
     bool res = true;
 
@@ -170,15 +170,11 @@ bool Connect(Wire* input, Gate* output, int* errorCode) {
         error = ERROR_CONNECT_INPUT;
         res = false;
     }
-
-    if (errorCode != nullptr) { 
-        *errorCode = error;
-    }
-    return res;
+    return error;
 }
 
 // Connect an input Gate and an output Wire
-bool Connect(Gate* input, Wire* output, int* errorCode) { 
+int Connect(Gate* input, Wire* output) { 
     int error = ERROR_NONE;
     bool res = true;
 
@@ -198,9 +194,103 @@ bool Connect(Gate* input, Wire* output, int* errorCode) {
         error = ERROR_CONNECT_INPUT;
         res = false;
     }
+    return error;
+}
 
-    if (errorCode != nullptr) { 
-        *errorCode = error;
+// Return a copy of all IDs in a NetList
+std::vector<int> GetIDList(std::vector<Node*> netList) {
+    std::vector<int> resultIDList;
+    if (netList.empty()) {
+        return resultIDList;
     }
-    return res;
+    for (int i = 0; i < netList.size(); i++) { 
+        resultIDList.push_back(netList.at(i)->GetID());
+    }
+    return resultIDList;
+}
+
+// Return a copy of all IDs in a GateList
+std::vector<int> GetIDList(std::vector<Gate*> gateList) {
+    std::vector<int> resultIDList;
+    if (gateList.empty()) {
+        return resultIDList;
+    }
+    for (int i = 0; i < gateList.size(); i++) { 
+        resultIDList.push_back(gateList.at(i)->GetID());
+    }
+    return resultIDList;
+}
+
+// Return a copy of all IDs in a WireList
+std::vector<int> GetIDList(std::vector<Wire*> wireList) {
+    std::vector<int> resultIDList;
+    if (wireList.empty()) {
+        return resultIDList;
+    }
+    for (int i = 0; i < wireList.size(); i++) { 
+        resultIDList.push_back(wireList.at(i)->GetID());
+    }
+    return resultIDList;
+}
+
+// Return a copy of all Gates in a NetList
+std::vector<Gate*> GetGateList(std::vector<Node*> netList) {
+    std::vector<Gate*> resultGateList;
+    Gate* gate = nullptr;
+    if (netList.empty()) {
+        return resultGateList;
+    }
+    for (int i = 0; i < netList.size(); i++) { 
+        gate = dynamic_cast<Gate*>(netList.at(i));
+        if (gate != nullptr) {
+            resultGateList.push_back(gate);
+        }
+    }
+    return resultGateList;
+}
+
+// Return a copy of all Wires in a NetList
+std::vector<Wire*> GetWireList(std::vector<Node*> netList) {
+    std::vector<Wire*> resultWireList;
+    Wire* wire = nullptr;
+    if (netList.empty()) {
+        return resultWireList;
+    }
+    for (int i = 0; i < netList.size(); i++) { 
+        wire = dynamic_cast<Wire*>(netList.at(i));
+        if (wire != nullptr) {
+            resultWireList.push_back(wire);
+        }
+    }
+    return resultWireList;
+}
+
+// Return a copy of all input Wires in a NetList
+std::vector<Wire*> GetInputsList(std::vector<Node*> netList) {
+    std::vector<Wire*> resultWireList;
+    std::vector<Wire*> wireList = GetWireList(netList);
+    if (wireList.empty()) {
+        return resultWireList;
+    }
+    for (int i = 0; i < wireList.size(); i++) { 
+        if (wireList.at(i)->GetInputs().empty() && !wireList.at(i)->GetOutputs().empty()) {
+            resultWireList.push_back(wireList.at(i));
+        }
+    }
+    return resultWireList;
+}
+
+// Return a copy of all output Wires in a NetList
+std::vector<Wire*> GetOutputsList(std::vector<Node*> netList) {
+    std::vector<Wire*> resultWireList;
+    std::vector<Wire*> wireList = GetWireList(netList);
+    if (wireList.empty()) {
+        return resultWireList;
+    }
+    for (int i = 0; i < wireList.size(); i++) { 
+        if (!wireList.at(i)->GetInputs().empty() && wireList.at(i)->GetOutputs().empty()) {
+            resultWireList.push_back(wireList.at(i));
+        }
+    }
+    return resultWireList;
 }
