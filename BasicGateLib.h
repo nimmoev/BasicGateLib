@@ -4,8 +4,7 @@
 #include <iostream>
 #include <vector>
 
-enum NodeState {OFF = 0, ON = 1, DC = 2, UNSET = 3};
-enum GateType {INV, AND, OR, NAND, NOR, XOR, XNOR, UNDEF};
+enum GateType {GATETYPE_INV, GATETYPE_AND, GATETYPE_OR, GATETYPE_NAND, GATETYPE_NOR, GATETYPE_XOR, GATETYPE_XNOR, GATETYPE_UNDEF};
 
 const int ERROR_NONE = 0x00;
 const int ERROR_GENERIC = 0x01;
@@ -17,6 +16,8 @@ const int ERROR_CONNECT_OUTPUT = 0x06;
 const int ERROR_NETLIST_EMPTY = 0x07;
 const int ERROR_GATELIST_EMPTY = 0x08;
 const int ERROR_WIRELIST_EMPTY = 0x09;
+const int ERROR_NODE_INVALID_TYPE = 0x0A;
+const int ERROR_GATETYPE_INVALID_TYPE = 0x0B;
 
 // Class prototypes
 class Node;
@@ -42,7 +43,7 @@ public:
 
 /// @brief  A class which offers a GateType and a connection between series of Wires
 class Gate : public Node { 
-private:
+protected:
     GateType gateType;
     std::vector<Wire*> inputs;
     Wire* output;
@@ -69,7 +70,7 @@ private:
 
 /// @brief  A class which offers a connection between series of Gates
 class Wire: public Node {
-private:
+protected:
     std::vector<Gate*> inputs;
     std::vector<Gate*> outputs;
 
@@ -101,5 +102,6 @@ std::vector<Gate*> GetGateList(std::vector<Node*> netList);
 std::vector<Wire*> GetWireList(std::vector<Node*> netList);
 std::vector<Wire*> GetInputsList(std::vector<Node*> netList);
 std::vector<Wire*> GetOutputsList(std::vector<Node*> netList);
+void CleanupNetList(std::vector<Node*> netList);
 
 #endif

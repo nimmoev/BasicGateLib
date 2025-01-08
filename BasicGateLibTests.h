@@ -9,11 +9,9 @@
 // To add a new test, follow these instructions:
 //  1. Declare a parameter-less function of type void in header file
 //  2. Define a parameter-less function of type void in source file
-//  3. Append the test function to BasicGateLibTestFunctionVector in source file
-//  4. Append a string of the same name as the test function to BasicGateLibTestNameVector in source file
+//  3. Append the test function to BGL_UnitTests in source file as a UnitTest
 
-extern std::vector<void (*)()> BasicGateLibTestFunctionVector;
-extern std::vector<std::string> BasicGateLibTestNameVector;
+extern const std::vector<UnitTest> BGL_UnitTests;
 extern UnitTestList BGL_UTL;
 
 void Node_Constr_ShouldMatch();

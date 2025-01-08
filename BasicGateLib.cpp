@@ -32,14 +32,14 @@ void Node::PrintID() {
 }
 
 Gate::Gate() { 
-    this->gateType = UNDEF;
+    this->gateType = GATETYPE_UNDEF;
     this->inputs.clear();
     this->output = nullptr;
 }
 
 Gate::Gate(std::string name) { 
     this->name = name;
-    this->gateType = UNDEF;
+    this->gateType = GATETYPE_UNDEF;
     this->inputs.clear();
     this->output = nullptr;
 }
@@ -370,4 +370,23 @@ std::vector<Wire*> GetOutputsList(std::vector<Node*> netList) {
         }
     }
     return resultWireList;
+}
+
+// Delete all Gates and Wires in a NetList
+void CleanupNetList(std::vector<Node*> netList) {
+    std::vector<Gate*> gateList;
+    std::vector<Wire*> wireList;
+    if (netList.empty()) { 
+        return;
+    }
+
+    gateList = GetGateList(netList);
+    wireList = GetWireList(netList);
+    for (Gate* gate : gateList) { 
+        delete gate;
+    }
+    for (Wire* wire : wireList) {
+        delete wire;
+    }
+    return;
 }
