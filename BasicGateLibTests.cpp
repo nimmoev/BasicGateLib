@@ -1,6 +1,6 @@
 #include "BasicGateLibTests.h"
 
-const std::vector<UnitTest> BGL_UnitTests = {
+UnitTestList BGL_UTL("BGL Unit Tests", std::vector<UnitTest>({
     UnitTest(Node_Constr_ShouldMatch, "Node_Constr_ShouldMatch"),
     UnitTest(Node_ConstrName_NameShouldMatch, "Node_ConstrName_NameShouldMatch"),
     UnitTest(Gate_Constr_GateTypeShouldBeUNDEF, "Gate_Constr_GateTypeShouldBeUNDEF"),
@@ -50,9 +50,7 @@ const std::vector<UnitTest> BGL_UnitTests = {
     UnitTest(None_GetWireList_ShouldMatch, "None_GetWireList_ShouldMatch"),
     UnitTest(None_GetInputsList_ShouldMatch, "None_GetInputsList_ShouldMatch"),
     UnitTest(None_GetOutputsList_ShouldMatch, "None_GetOutputsList_ShouldMatch")
-};
-
-UnitTestList BGL_UTL("BGL Unit Tests", BGL_UnitTests);
+}));
 
 void Node_Constr_ShouldMatch() {
     Node w0;

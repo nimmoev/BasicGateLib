@@ -75,7 +75,7 @@ Gate::Gate(GateType gateType, std::vector<Wire*> inputs, Wire* output, std::stri
 
 }
 
-// Return an integer representing the GateType of the Gate
+// Return an enum representing the GateType of the Gate
 GateType Gate::GetGateType() {
     return this->gateType;
 } 

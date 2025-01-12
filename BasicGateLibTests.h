@@ -11,7 +11,6 @@
 //  2. Define a parameter-less function of type void in source file
 //  3. Append the test function to BGL_UnitTests in source file as a UnitTest
 
-extern const std::vector<UnitTest> BGL_UnitTests;
 extern UnitTestList BGL_UTL;
 
 void Node_Constr_ShouldMatch();

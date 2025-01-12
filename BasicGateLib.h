@@ -13,11 +13,6 @@ const int ERROR_WIRE_IS_NULL = 0x03;
 const int ERROR_GATE_IS_NULL = 0x04;
 const int ERROR_CONNECT_INPUT = 0x05;
 const int ERROR_CONNECT_OUTPUT = 0x06;
-const int ERROR_NETLIST_EMPTY = 0x07;
-const int ERROR_GATELIST_EMPTY = 0x08;
-const int ERROR_WIRELIST_EMPTY = 0x09;
-const int ERROR_NODE_INVALID_TYPE = 0x0A;
-const int ERROR_GATETYPE_INVALID_TYPE = 0x0B;
 
 // Class prototypes
 class Node;
